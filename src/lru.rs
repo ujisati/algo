@@ -1,8 +1,63 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::hash::Hash;
 use std::rc::Rc;
 use uuid::Uuid;
 
+// type IntMutNode<T> = Rc<RefCell<Node<T>>>;
+//
+// struct Node<T> {
+//     value: T,
+//     next: Option<IntMutNode<T>>,
+//     prev: Option<IntMutNode<T>>,
+//     uuid: Uuid,
+// }
+//
+// struct LRU<K, V>
+// where
+//     K: Hash,
+// {
+//     head: Option<IntMutNode<V>>,
+//     tail: Option<IntMutNode<V>>,
+//     lookup: HashMap<K, IntMutNode<V>>,
+//     reverse_lookup: HashMap<Uuid, K>,
+//     capacity: i64,
+//     length: i64,
+// }
+//
+// impl<K, V> LRU<K, V>
+// where
+//     K: Hash,
+//     K: Eq,
+//     V: Clone
+// {
+//     fn new(capacity: i64) -> Self {
+//         Self {
+//             head: None,
+//             tail: None,
+//             lookup: HashMap::new(),
+//             reverse_lookup: HashMap::new(),
+//             capacity,
+//             length: 0,
+//         }
+//     }
+//
+//     fn get(&mut self, key: &K) -> Option<V> {
+//         if self.lookup.contains_key(key) {
+//             let node = self.lookup[key].clone();
+//             self.detach(&node);
+//             self.prepend(&node);
+//             return Some(node.borrow().value.clone())
+//         } else {
+//             None
+//         }
+//     }
+//
+//     fn detach(&mut self, node: &IntMutNode<V>) {}
+//
+//     fn prepend(&mut self, node: &IntMutNode<V>) {}
+// }
+//
 struct Node {
     value: i64,
     next: Option<Rc<RefCell<Node>>>,
@@ -106,6 +161,7 @@ impl LRU {
         }
     }
 }
+
 
 #[cfg(test)]
 mod tests {
