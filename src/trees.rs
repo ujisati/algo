@@ -30,8 +30,7 @@ impl BinarySearchTree for BinaryNode<i64> {
                 self.left.as_ref().unwrap().borrow_mut().insert(value);
             }
             self.left = Some(Rc::new(RefCell::new(BinaryNode::new(value))));
-        }
-        else {
+        } else {
             if self.right.is_some() {
                 self.right.as_ref().unwrap().borrow_mut().insert(value);
             }
@@ -128,7 +127,7 @@ pub fn in_order_traverse(
     return path;
 }
 
-// Red-black tree, AVL tree for balancing 
+// Red-black tree, AVL tree for balancing
 
 #[cfg(test)]
 mod tests {
@@ -227,7 +226,6 @@ mod tests {
         let right_right_left = BinaryNode::new(33);
         let right_right_right = BinaryNode::new(37);
 
-
         left_left.left = Some(Rc::new(RefCell::new(left_left_left)));
         left_left.right = Some(Rc::new(RefCell::new(left_left_right)));
         left_right.left = Some(Rc::new(RefCell::new(left_right_left)));
@@ -242,7 +240,6 @@ mod tests {
         right.right = Some(Rc::new(RefCell::new(right_right)));
         root.left = Some(Rc::new(RefCell::new(left)));
         root.right = Some(Rc::new(RefCell::new(right)));
-
 
         assert_eq!(root.search(37), true);
         assert_eq!(root.search(38), false);
@@ -269,7 +266,6 @@ mod tests {
         let right_right_left = BinaryNode::new(33);
         let right_right_right = BinaryNode::new(37);
 
-
         left_left.left = Some(Rc::new(RefCell::new(left_left_left)));
         left_left.right = Some(Rc::new(RefCell::new(left_left_right)));
         left_right.left = Some(Rc::new(RefCell::new(left_right_left)));
@@ -287,6 +283,5 @@ mod tests {
 
         root.insert(38);
         assert_eq!(root.search(38), true);
-
     }
 }

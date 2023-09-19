@@ -1,12 +1,12 @@
 pub struct MinHeap<T> {
     pub length: usize,
-    pub data: Vec<T>
+    pub data: Vec<T>,
 }
 
-impl<T> MinHeap<T> 
-where T: Copy + PartialOrd
+impl<T> MinHeap<T>
+where
+    T: Copy + PartialOrd,
 {
-
     pub fn new(&mut self) {
         self.length = 0;
         self.data = Vec::new();
@@ -17,7 +17,6 @@ where T: Copy + PartialOrd
         self.heapify_up(self.length);
         self.length += 1;
     }
-
 
     pub fn delete(&mut self) -> T {
         let val = self.data[0];
@@ -50,23 +49,31 @@ where T: Copy + PartialOrd
     }
 
     fn heapify_down(&mut self, idx: usize) {
-        if idx >= self.length { return; }
-        
+        if idx >= self.length {
+            return;
+        }
+
         let left_idx = self.left_child(idx);
         let right_idx = self.right_child(idx);
-        
-        if left_idx > self.length || right_idx > self.length { return; }
+
+        if left_idx > self.length || right_idx > self.length {
+            return;
+        }
 
         let right_val = self.data[right_idx];
         let left_val = self.data[left_idx];
         let curr_val = self.data[idx];
 
-        let (min_val, min_idx) = if left_val < right_val { (left_val, left_idx) } else { (right_val, right_idx) };
+        let (min_val, min_idx) = if left_val < right_val {
+            (left_val, left_idx)
+        } else {
+            (right_val, right_idx)
+        };
         if min_val < curr_val {
-            self.data[min_idx] = curr_val; 
+            self.data[min_idx] = curr_val;
             self.data[idx] = min_val;
             self.heapify_down(min_idx);
-        } 
+        }
     }
 
     fn parent(&self, idx: usize) -> usize {
@@ -91,7 +98,7 @@ mod tests {
     fn test_heap() {
         let mut heap = MinHeap::<i64> {
             length: 0,
-            data: Vec::new()
+            data: Vec::new(),
         };
         heap.insert(3);
         heap.insert(2);
@@ -121,13 +128,12 @@ mod tests {
         assert_eq!(heap.data.len(), 0);
     }
 
-
     #[test]
     #[should_panic]
     fn test_empty_delete_panics() {
         let mut heap = MinHeap::<i64> {
             length: 0,
-            data: Vec::new()
+            data: Vec::new(),
         };
         heap.delete();
     }
