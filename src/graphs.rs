@@ -81,6 +81,7 @@ pub fn djikstras_shortest_path(g: &AdjacencyList, source: usize, target: usize) 
     let mut prev = vec![-1 as i64; g.len()];
     dists[source] = 0.;
 
+    println!("Beginning loop");
     while has_unvisited(&seen, &dists) {
         let curr = get_lowest_unvisited(&seen, &dists);
         seen[curr] = true;
@@ -92,6 +93,7 @@ pub fn djikstras_shortest_path(g: &AdjacencyList, source: usize, target: usize) 
             }
             let dist = dists[curr] + edge.weight;
             if dist < dists[edge.to] {
+                println!("path to {} from {} is shorest", edge.to, curr);
                 dists[edge.to] = dist;
                 prev[edge.to] = curr as i64;
             }
@@ -110,14 +112,13 @@ pub fn djikstras_shortest_path(g: &AdjacencyList, source: usize, target: usize) 
 }
 
 pub fn has_unvisited(seen: &Vec<bool>, dists: &Vec<f64>) -> bool {
-    let mut has_unvisited = false;
     for (i, e) in seen.iter().enumerate() {
         if !e && dists[i] < f64::INFINITY {
-            has_unvisited = true;
-            break;
+            println!("Has unvisited: {}", i);
+            return true;
         }
     }
-    return has_unvisited;
+    return false; 
 }
 
 pub fn get_lowest_unvisited(seen: &Vec<bool>, dists: &Vec<f64>) -> usize {
@@ -126,20 +127,37 @@ pub fn get_lowest_unvisited(seen: &Vec<bool>, dists: &Vec<f64>) -> usize {
 
     for i in 0..seen.len() {
         if seen[i] {
+            println!("seen {}", i);
             continue;
         }
         if lowest_distance > dists[i] {
-            lowest_distance = dists[i]
+            lowest_distance = dists[i];
+            lowest_idx = i as i64;
         }
-        lowest_idx = i as i64;
     }
 
+    println!("Lowest unvisited {}", lowest_idx);
     return lowest_idx as usize;
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{breadth_first_search, depth_first_search, Node};
+    use super::*;
+
+    #[test]
+    fn test_djikstra() {
+        let g = vec![
+            vec![Node { to: 1, weight: 2. }, Node { to: 2, weight: 1. }],
+            vec![Node { to: 1, weight: 1. }, Node { to: 2, weight: 2. }, Node { to: 4, weight: 3. }],
+            vec![Node { to: 1, weight: 2. }, Node { to: 4, weight: 3. }, Node { to: 3, weight: 1. }],
+            vec![Node { to: 1, weight: f64::INFINITY}],
+            vec![],
+        ];
+        let path = djikstras_shortest_path(&g, 0, 4);
+        assert_eq!(path, vec![0, 2, 4], "I just realized you could put messages in the macro!!!");
+
+           
+    }
 
     #[test]
     fn test_bfs() {
